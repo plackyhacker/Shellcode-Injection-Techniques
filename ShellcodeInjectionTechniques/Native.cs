@@ -21,10 +21,17 @@ namespace ShellcodeInjectionTechniques
         }
 
 		public enum ThreadCreationFlags : UInt32
-        {
+		{
 			NORMAL = 0x0,
 			CREATE_SUSPENDED = 0x00000004,
 			STACK_SIZE_PARAM_IS_A_RESERVATION = 0x00010000
+		}
+
+		public enum ProcessCreationFlags : UInt32
+		{
+			CREATE_NO_WINDOW = 0x08000000,
+			CREATE_SUSPENDED = 0x00000004,
+			DETACHED_PROCESS = 0x00000008
 		}
 
 		[Flags]
@@ -154,6 +161,49 @@ namespace ShellcodeInjectionTechniques
 			public ulong LastExceptionFromRip;
 		}
 
+		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi)]
+		public struct STARTUPINFO
+		{
+			public Int32 cb;
+			public string lpReserved;
+			public string lpDesktop;
+			public string lpTitle;
+			public Int32 dwX;
+			public Int32 dwY;
+			public Int32 dwXSize;
+			public Int32 dwYSize;
+			public Int32 dwXCountChars;
+			public Int32 dwYCountChars;
+			public Int32 dwFillAttribute;
+			public Int32 dwFlags;
+			public Int16 wShowWindow;
+			public Int16 cbReserved2;
+			public IntPtr lpReserved2;
+			public IntPtr hStdInput;
+			public IntPtr hStdOutput;
+			public IntPtr hStdError;
+		}
+
+		[StructLayout(LayoutKind.Sequential)]
+		public struct PROCESS_INFORMATION
+		{
+			public IntPtr hProcess;
+			public IntPtr hThread;
+			public int dwProcessId;
+			public int dwThreadId;
+		}
+
+		[StructLayout(LayoutKind.Sequential)]
+		public struct PROCESS_BASIC_INFORMATION
+		{
+			public IntPtr ExitStatus;
+			public IntPtr PebAddress;
+			public IntPtr AffinityMask;
+			public IntPtr BasePriority;
+			public IntPtr UniquePID;
+			public IntPtr InheritedFromUniqueProcessId;
+		}
+
 
 		[DllImport("kernel32.dll", SetLastError = true)]
         public static extern IntPtr OpenProcess(uint processAccess, bool bInheritHandle, int processId);
@@ -164,7 +214,10 @@ namespace ShellcodeInjectionTechniques
         [DllImport("kernel32.dll")]
         public static extern bool WriteProcessMemory(IntPtr hProcess, IntPtr lpBaseAddress, byte[] lpBuffer, Int32 nSize, out IntPtr lpNumberOfBytesWritten);
 
-        [DllImport("kernel32.dll")]
+		[DllImport("kernel32.dll", SetLastError = true, CharSet = CharSet.Ansi)]
+		public static extern bool CreateProcess(string lpApplicationName, string lpCommandLine, IntPtr lpProcessAttributes, IntPtr lpThreadAttributes, bool bInheritHandles, ProcessCreationFlags dwCreationFlags, IntPtr lpEnvironment, string lpCurrentDirectory, ref STARTUPINFO lpStartupInfo, out PROCESS_INFORMATION lpProcessInformation);
+
+		[DllImport("kernel32.dll")]
         public static extern IntPtr CreateRemoteThread(IntPtr hProcess, IntPtr lpThreadAttributes, uint dwStackSize, IntPtr lpStartAddress, IntPtr lpParameter, ThreadCreationFlags dwCreationFlags, out IntPtr lpThreadId);
 
         [DllImport("kernel32.dll")]
@@ -187,5 +240,11 @@ namespace ShellcodeInjectionTechniques
 
         [DllImport("kernel32.dll", SetLastError = true)]
         public static extern uint GetLastError();
-    }
+
+		[DllImport("ntdll.dll", SetLastError = true)]
+		public static extern UInt32 ZwQueryInformationProcess(IntPtr hProcess, int procInformationClass, ref PROCESS_BASIC_INFORMATION procInformation, UInt32 ProcInfoLen, ref UInt32 retlen);
+
+		[DllImport("kernel32.dll", SetLastError = true)]
+		public static extern bool ReadProcessMemory(IntPtr hProcess, IntPtr lpBaseAddress, byte[] lpBuffer, int dwSize, out IntPtr lpNumberOfBytesRead);
+	}
 }
