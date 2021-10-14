@@ -57,8 +57,16 @@ namespace ShellcodeInjectionTechniques
         ProcessThread GetThread(ProcessThreadCollection threads)
         {
             // find a thread
-            // it is likely that the process you are hijacking will be unstable as 0 is likely the main thread
+            // it is very likely that the process you are hijacking will be unstable as 0 is probably the main thread
             return threads[0];
+
+            /*
+            // you could loop through the threads looking for a better one
+            foreach(ProcessThread thread in threads)
+            {
+
+            }
+            */
         }
     }
 }
