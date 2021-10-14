@@ -20,6 +20,13 @@ namespace ShellcodeInjectionTechniques
             PAGE_WRITECOMBINE = 0x00000400
         }
 
+		public enum ThreadCreationFlags : UInt32
+        {
+			NORMAL = 0x0,
+			CREATE_SUSPENDED = 0x00000004,
+			STACK_SIZE_PARAM_IS_A_RESERVATION = 0x00010000
+		}
+
 		[Flags]
 		public enum AllocationType
 		{
@@ -158,7 +165,7 @@ namespace ShellcodeInjectionTechniques
         public static extern bool WriteProcessMemory(IntPtr hProcess, IntPtr lpBaseAddress, byte[] lpBuffer, Int32 nSize, out IntPtr lpNumberOfBytesWritten);
 
         [DllImport("kernel32.dll")]
-        public static extern IntPtr CreateRemoteThread(IntPtr hProcess, IntPtr lpThreadAttributes, uint dwStackSize, IntPtr lpStartAddress, IntPtr lpParameter, uint dwCreationFlags, out IntPtr lpThreadId);
+        public static extern IntPtr CreateRemoteThread(IntPtr hProcess, IntPtr lpThreadAttributes, uint dwStackSize, IntPtr lpStartAddress, IntPtr lpParameter, ThreadCreationFlags dwCreationFlags, out IntPtr lpThreadId);
 
         [DllImport("kernel32.dll")]
         public static extern bool VirtualProtectEx(IntPtr hProcess, IntPtr lpAddress, UIntPtr dwSize, MemoryProtection flNewProtect, out MemoryProtection lpflOldProtect);
