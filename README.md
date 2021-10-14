@@ -32,3 +32,18 @@ I will be building this project up as I learn, discover or develop more techniqu
 [+] SetThreadContext(), RIP assigned: 0x211E4730000
 [+] ResumeThread(): 0x334
 ```
+
+## Process Hollowing
+[ProcessHollow.cs](https://github.com/plackyhacker/Shellcode-Injection-Techniques/blob/master/ShellcodeInjectionTechniques/Techniques/ProcessHollow.cs) : This technique starts an executable in the suspended state (svchost.exe), finds the main thread entry point, injects our shellcode into it then resumes the thread.
+
+```
+[+] Using technique: ShellcodeInjectionTechniques.ProcessHollow
+[+] CreateProcess(): C:\Windows\System32\svchost.exe
+[+] Pointer to ImageBase: 0xD31E956010
+[+] ReadProcessMemory(): 0xD31E956010
+[+] ImageBase: 0x7FF6116C0000
+[+] ReadProcessMemory(): 0x7FF6116C0000
+[+] EntryPoint: 0xD31E956010
+[+] WriteProcessMemory(): 0x7FF6116C4E80
+[+] ResumeThread(): 0x454
+```
