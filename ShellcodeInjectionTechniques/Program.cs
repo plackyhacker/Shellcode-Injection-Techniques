@@ -20,7 +20,7 @@ namespace ShellcodeInjectionTechniques
             // get the process to target
             Process target = null;
             
-            
+            /*
             Process[] processes = Process.GetProcessesByName("notepad");
 
             if(processes.Length == 0)
@@ -31,10 +31,10 @@ namespace ShellcodeInjectionTechniques
 
             Debug("[+] Found process: {0}", new string[] { processes[0].Id.ToString() });
             target = processes[0];
-            
+            */
                 
             // instantiate the chosen technique
-            ITechnique teckers = new APCInjection();
+            ITechnique teckers = new ShellcodeRunner();
             Debug("[+] Using technique: {0}", new string[] { teckers.GetType().ToString() });
 
             // send the shellcode to the chosen technique to run

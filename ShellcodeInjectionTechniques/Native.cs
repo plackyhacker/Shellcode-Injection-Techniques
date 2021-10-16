@@ -599,6 +599,9 @@ namespace ShellcodeInjectionTechniques
         public static extern bool VirtualProtectEx(IntPtr hProcess, IntPtr lpAddress, UIntPtr dwSize, MemoryProtection flNewProtect, out MemoryProtection lpflOldProtect);
 
         [DllImport("kernel32.dll")]
+        public static extern bool VirtualProtect(IntPtr lpAddress, UIntPtr dwSize, MemoryProtection flNewProtect, out MemoryProtection lpflOldProtect);
+
+        [DllImport("kernel32.dll")]
         public static extern IntPtr OpenThread(ThreadAccess dwDesiredAccess, bool bInheritHandle, UInt32 dwThreadId);
 
         [DllImport("kernel32.dll", SetLastError = true)]
