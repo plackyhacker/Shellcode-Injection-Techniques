@@ -630,5 +630,8 @@ namespace ShellcodeInjectionTechniques
 
         [DllImport("msvcrt.dll", EntryPoint = "memcpy", CallingConvention = CallingConvention.Cdecl, SetLastError = false)]
         public static extern IntPtr memcpy(IntPtr dest, byte[] src, UInt32 count);
+
+        [DllImport("kernel32.dll", SetLastError = true)]
+        public static extern Int32 QueueUserAPC(IntPtr pfnAPC, IntPtr hThread,  IntPtr dwData);
     }
 }
