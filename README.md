@@ -33,6 +33,19 @@ I will be building this project up as I learn, discover or develop more techniqu
 [+] ResumeThread() - thread handle: 0x378
 ```
 
+## Asychronous Procedure Call Injection
+[ACPInjection.cs](https://github.com/plackyhacker/Shellcode-Injection-Techniques/blob/master/ShellcodeInjectionTechniques/Techniques/APCInjection.cs) : This technique is similar to the Thread Hijacking technique. We inject the shellcode into a remote thread, then queue an APC object in the thread. When the thread enters an alertable state (when it calls SleepEx, SignalObjectAndWait, MsgWaitForMultipleObjectsEx, WaitForMultipleObjectsEx, or WaitForSingleObjectEx) it runs our shellcode pointed to by our queued APC object. 
+
+```
+[+] Found process: 25320
+[+] Using technique: ShellcodeInjectionTechniques.APCInjection
+[+] Found thread: 23796
+[+] OpenThread() - thread handle: 0x378
+[+] VirtualAllocEx(), assigned: 0x24E064D0000
+[+] WriteProcessMemory() - remote address: 0x24E064D0000
+[+] QueueUserAPC() - thread handle: 0x378
+```
+
 ## Process Hollowing
 [ProcessHollow.cs](https://github.com/plackyhacker/Shellcode-Injection-Techniques/blob/master/ShellcodeInjectionTechniques/Techniques/ProcessHollow.cs) : This technique starts another process in the suspended state (svchost.exe), finds the main thread entry point, injects our shellcode into it then resumes the thread.
 
