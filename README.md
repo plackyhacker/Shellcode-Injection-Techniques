@@ -5,6 +5,15 @@ I will be building this project up as I learn, discover or develop more techniqu
 
 **Note:** The project is not intended to be used as-is. If you are going to use any of the techniques there is a better chance of bypassing AV if you create a smaller, customised project with your chosen technique.
 
+## Shellcode Runner
+[ShellcodeRunner.cs](https://github.com/plackyhacker/Shellcode-Injection-Techniques/blob/master/ShellcodeInjectionTechniques/Techniques/ShellcodeRunner.cs) : This technique isn't strictly an injection technique (because we execute the shellcode in the same process) but is the simplest of all techniques. We ensure I shellcode uses a fixed memory location in an `unsafe` context. We change the protection on the pahe where the shellcode is located so we can execute it. We then use a C# delegate function to execute the shellcode.
+
+```
+[+] Using technique: ShellcodeInjectionTechniques.ShellcodeRunner
+[+] VirtualProtect() - set to PAGE_EXECUTE_READWRITE, shellcode address: 0x20D000418E0
+[+] Executing shellcode - memory address: 0x20D000418E0
+```
+
 ## Classic Injection
 [ClassicInjection.cs](https://github.com/plackyhacker/Shellcode-Injection-Techniques/blob/master/ShellcodeInjectionTechniques/Techniques/ClassicInjection.cs) : This technique allocates memory in the target process, injects the shellcode and starts a new thread.
 
@@ -81,7 +90,7 @@ Remember you will need to start a process to inject to, except when using Proces
 [!] Unable to find process to inject into!
 ```
 
-When using the process hollowing technique you will need to comment out the code in `Program.cs` that looks for the process to inject into:
+When using the shellcode runner or the process hollowing technique you will need to comment out the code in `Program.cs` that looks for the process to inject into:
 
 ```csharp
 /*
