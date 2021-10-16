@@ -48,24 +48,6 @@ I will be building this project up as I learn, discover or develop more techniqu
 [+] ResumeThread() - thread handle: 0x454
 ```
 
-### Note
-When using process hollowing you need to comment out the code in `Program.cs` that looks for the process to inject into:
-
-```csharp
-/*
- Process[] processes = Process.GetProcessesByName("notepad");
-
-if(processes.Length == 0)
-{
-  Debug("[!] Unable to find process to inject into!");
-  return;
-}
-
-Debug("[+] Found process: {0}", new string[] { processes[0].Id.ToString() });
-target = processes[0];
-*/
-```
-
 ## Inter-Process Mapped View
 [InterProcessMappedView.cs](https://github.com/plackyhacker/Shellcode-Injection-Techniques/blob/master/ShellcodeInjectionTechniques/Techniques/InterProcessMappedView.cs) : This technique creates a new section in memory, creates a local mapped view of the section, copies our shellcode into the local mapped view and creates a remote mapped view of the local mapped view in the target process. Finally we create a new thread in the target process with the mapped view as the entry point.
 
@@ -84,4 +66,21 @@ Remember you will need to start a process to inject to, except when using Proces
 
 ```
 [!] Unable to find process to inject into!
+```
+
+When using the process hollowing technique you will need to comment out the code in `Program.cs` that looks for the process to inject into:
+
+```csharp
+/*
+Process[] processes = Process.GetProcessesByName("notepad");
+
+if(processes.Length == 0)
+{
+  Debug("[!] Unable to find process to inject into!");
+  return;
+}
+
+Debug("[+] Found process: {0}", new string[] { processes[0].Id.ToString() });
+target = processes[0];
+*/
 ```
