@@ -84,7 +84,7 @@ I will be building this project up as I learn, discover or develop more techniqu
 ```
 
 ## Notes
-Remember you will need to start a process to inject to, except when using Process Hollowing (this technique starts a new process in the suspended state).
+Remember you will need to start a process to inject to, except when using the shellcode runner or the process hollowing (this technique starts a new process in the suspended state).
 
 ```
 [!] Unable to find process to inject into!
