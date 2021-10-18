@@ -42,6 +42,19 @@ I will be building this project up as I learn, discover or develop more techniqu
 [+] ResumeThread() - thread handle: 0x378
 ```
 
+## Local Thread Hijacking
+[LocalThreadHijack.cs](https://github.com/plackyhacker/Shellcode-Injection-Techniques/blob/master/ShellcodeInjectionTechniques/Techniques/LocalThreadHijack.cs) : This technique creates a new local thread in a suspended state, we then hijack the thread, sets the instruction pointer (RIP) to our injected code and then resume the thread.
+
+```
+[+] Using technique: ShellcodeInjectionTechniques.LocalThreadHijack
+[+] CreateThread() - thread handle: 0x374
+[+] VirtualProtect() - set to PAGE_EXECUTE_READWRITE, shellcode address: 0x270800418E0
+[+] GetThreadContext() - thread handle: 0x374
+[+] RIP is: 0x7FFA79EE2630
+[+] SetThreadContext(), RIP assigned: 0x270800418E0
+[+] ResumeThread() - thread handle: 0x374
+```
+
 ## Asychronous Procedure Call Injection
 [ACPInjection.cs](https://github.com/plackyhacker/Shellcode-Injection-Techniques/blob/master/ShellcodeInjectionTechniques/Techniques/APCInjection.cs) : This technique is similar to the Thread Hijacking technique. We inject the shellcode into a remote thread, then queue an APC object in the thread. When the thread enters an alertable state (when it calls SleepEx, SignalObjectAndWait, MsgWaitForMultipleObjectsEx, WaitForMultipleObjectsEx, or WaitForSingleObjectEx) it runs our shellcode pointed to by our queued APC object. 
 
@@ -84,13 +97,13 @@ I will be building this project up as I learn, discover or develop more techniqu
 ```
 
 ## Notes
-Remember you will need to start a process to inject to, except when using the shellcode runner or the process hollowing technique (this technique starts a new process in the suspended state).
+Remember you will need to start a process to inject to, except when using the shellcode runner, local thread hijack technique or the process hollowing technique (this technique starts a new process in the suspended state).
 
 ```
 [!] Unable to find process to inject into!
 ```
 
-When using the shellcode runner or the process hollowing technique you will need to comment out the code in `Program.cs` that looks for the process to inject into:
+When using the shellcode runner, local thread hijack technique or the process hollowing technique you will need to comment out the code in `Program.cs` that looks for the process to inject into:
 
 ```csharp
 /*
