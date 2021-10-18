@@ -6,7 +6,7 @@ I will be building this project up as I learn, discover or develop more techniqu
 **Note:** The project is not intended to be used as-is. If you are going to use any of the techniques there is a better chance of bypassing AV if you create a smaller, customised project with your chosen technique.
 
 ## Shellcode Runner
-[ShellcodeRunner.cs](https://github.com/plackyhacker/Shellcode-Injection-Techniques/blob/master/ShellcodeInjectionTechniques/Techniques/ShellcodeRunner.cs) : This technique isn't strictly an injection technique (because we execute the shellcode in the same process) but is the simplest of all techniques. We ensure I shellcode uses a fixed memory location in an `unsafe` context. We change the protection on the pahe where the shellcode is located so we can execute it. We then use a C# delegate function to execute the shellcode.
+[ShellcodeRunner.cs](https://github.com/plackyhacker/Shellcode-Injection-Techniques/blob/master/ShellcodeInjectionTechniques/Techniques/ShellcodeRunner.cs) : This technique isn't strictly an injection technique (because we execute the shellcode in the same process) but is the simplest of all techniques. We ensure the shellcode uses a fixed memory location in an `unsafe` context. We change the protection on the page where the shellcode is located so we can execute it. We then use a C# delegate function to execute the shellcode.
 
 ```
 [+] Using technique: ShellcodeInjectionTechniques.ShellcodeRunner
@@ -84,7 +84,7 @@ I will be building this project up as I learn, discover or develop more techniqu
 ```
 
 ## Notes
-Remember you will need to start a process to inject to, except when using Process Hollowing (this technique starts a new process in the suspended state).
+Remember you will need to start a process to inject to, except when using the shellcode runner or the process hollowing technique (this technique starts a new process in the suspended state).
 
 ```
 [!] Unable to find process to inject into!
