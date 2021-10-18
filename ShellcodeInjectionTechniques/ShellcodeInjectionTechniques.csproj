@@ -79,6 +79,7 @@
     <Compile Include="Techniques\ProcessHollow.cs" />
     <Compile Include="Techniques\ShellcodeRunner.cs" />
     <Compile Include="Techniques\ThreadHijack.cs" />
+    <Compile Include="Techniques\LocalThreadHijack.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

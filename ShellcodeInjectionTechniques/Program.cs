@@ -34,7 +34,7 @@ namespace ShellcodeInjectionTechniques
             */
                 
             // instantiate the chosen technique
-            ITechnique teckers = new ShellcodeRunner();
+            ITechnique teckers = new LocalThreadHijack();
             Debug("[+] Using technique: {0}", new string[] { teckers.GetType().ToString() });
 
             // send the shellcode to the chosen technique to run
