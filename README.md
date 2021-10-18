@@ -5,6 +5,9 @@ I will be building this project up as I learn, discover or develop more techniqu
 
 **Note:** The project is not intended to be used as-is. If you are going to use any of the techniques there is a better chance of bypassing AV if you create a smaller, customised project with your chosen technique.
 
+## Assembly Injection
+You can use a [PowerShell assembly injection technique](https://github.com/plackyhacker/Shellcode-Injection-Techniques/blob/master/assembly-injection.ps1) if you want to avoid writing .Net binaries to disk.
+
 ## Shellcode Runner
 [ShellcodeRunner.cs](https://github.com/plackyhacker/Shellcode-Injection-Techniques/blob/master/ShellcodeInjectionTechniques/Techniques/ShellcodeRunner.cs) : This technique isn't strictly an injection technique (because we execute the shellcode in the same process) but is the simplest of all techniques. We ensure the shellcode uses a fixed memory location in an `unsafe` context. We change the protection on the page where the shellcode is located so we can execute it. We then use a C# delegate function to execute the shellcode.
 
