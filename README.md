@@ -5,6 +5,8 @@ I will be building this project up as I learn, discover or develop more techniqu
 
 **Note:** The project is not intended to be used as-is. If you are going to use any of the techniques there is a better chance of bypassing AV if you create a smaller, customised project with your chosen technique.
 
+If you do use any of the code in these repositories **keep it legal!**
+
 ## Assembly Injection
 You can use a [PowerShell assembly injection technique](https://github.com/plackyhacker/Shellcode-Injection-Techniques/blob/master/assembly-injection.ps1) if you want to avoid writing .Net binaries to disk.
 
