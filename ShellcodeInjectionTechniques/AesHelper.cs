@@ -33,12 +33,26 @@ namespace ShellcodeInjectionTechniques
             }
         }
 
-        private static byte[] SubArray(byte[] a, int length)
+        public static byte[] SubArray(byte[] a, int length)
         {
             byte[] b = new byte[length];
             for (int i = 0; i < length; i++)
             {
                 b[i] = a[i];
+            }
+            return b;
+        }
+
+        public static byte[] SubArray(byte[] a, int startIndex, int length)
+        {
+            int lengthOfArrayToCopy = length;
+            if (length + startIndex > a.Length)
+                lengthOfArrayToCopy = a.Length - startIndex;
+
+            byte[] b = new byte[lengthOfArrayToCopy];
+            for (int i = 0; i < lengthOfArrayToCopy; i++)
+            {
+                b[i] = a[startIndex + i];
             }
             return b;
         }

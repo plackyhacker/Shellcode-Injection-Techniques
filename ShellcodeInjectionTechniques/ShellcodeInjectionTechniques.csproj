@@ -73,6 +73,7 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Techniques\APCInjection.cs" />
+    <Compile Include="Techniques\AtomBomb.cs" />
     <Compile Include="Techniques\ClassicInjection.cs" />
     <Compile Include="Techniques\InterProcessMappedView.cs" />
     <Compile Include="Techniques\ITechnique.cs" />

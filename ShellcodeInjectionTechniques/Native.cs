@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Text;
 using System.Runtime.InteropServices;
 
 namespace ShellcodeInjectionTechniques
@@ -577,7 +578,33 @@ namespace ShellcodeInjectionTechniques
 			public IntPtr UniqueThread;
 		}
 
-		[DllImport("kernel32.dll", SetLastError = true)]
+        [StructLayout(LayoutKind.Sequential)]
+        public struct MEMORY_BASIC_INFORMATION
+        {
+            public IntPtr BaseAddress;
+            public IntPtr AllocationBase;
+            public MemoryProtection AllocationProtect;
+            public IntPtr RegionSize;
+            public StateEnum State;
+            public MemoryProtection Protect;
+            public TypeEnum Type;
+        }
+
+        public enum StateEnum : uint
+        {
+            MEM_COMMIT = 0x1000,
+            MEM_FREE = 0x10000,
+            MEM_RESERVE = 0x2000
+        }
+
+        public enum TypeEnum : uint
+        {
+            MEM_IMAGE = 0x1000000,
+            MEM_MAPPED = 0x40000,
+            MEM_PRIVATE = 0x20000
+        }
+
+        [DllImport("kernel32.dll", SetLastError = true)]
         public static extern IntPtr OpenProcess(uint processAccess, bool bInheritHandle, int processId);
 
         [DllImport("kernel32.dll", SetLastError = true, ExactSpelling = true)]
@@ -639,5 +666,21 @@ namespace ShellcodeInjectionTechniques
 
         [DllImport("kernel32.dll", SetLastError = true)]
         public static extern Int32 QueueUserAPC(IntPtr pfnAPC, IntPtr hThread,  IntPtr dwData);
+
+        [DllImport("kernel32.dll", SetLastError = true, CharSet = CharSet.Auto)]
+        public static extern ushort GlobalAddAtomW(IntPtr lpString);
+
+        [DllImport("kernel32.dll", SetLastError = true, CharSet = CharSet.Auto)]
+        public static extern uint GlobalGetAtomNameW(ushort nAtom, StringBuilder lpBuffer, int nSize);
+
+        [DllImport("kernel32", CharSet = CharSet.Ansi, ExactSpelling = true, SetLastError = true)]
+        public static extern IntPtr GetProcAddress(IntPtr hModule, string procName);
+
+        [DllImport("kernel32.dll")]
+        public static extern int VirtualQueryEx(IntPtr hProcess, IntPtr lpAddress, out MEMORY_BASIC_INFORMATION lpBuffer, uint dwLength);
+
+        [DllImport("ntdll.dll", SetLastError = true, CharSet = CharSet.Auto)]
+        public static extern NTSTATUS NtQueueApcThread(IntPtr ThreadHandle, IntPtr ApcRoutine, UInt32 ApcRoutineContext, IntPtr ApcStatusBlock, Int32 ApcReserved);
+
     }
 }
