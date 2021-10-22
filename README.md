@@ -132,6 +132,8 @@ This code requires the main thread to enter an alertable state in order to execu
 ```
 
 ## Notes
+The Atom Bombing technique places null terminated strings in the Global Atom Table, this means you must use shellcode that doesn't have 0x00 characters in it.
+
 Remember you will need to start a process to inject to, except when using the shellcode runner, local thread hijack technique or the process hollowing technique (this technique starts a new process in the suspended state).
 
 ```
